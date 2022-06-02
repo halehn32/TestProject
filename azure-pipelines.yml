@@ -1,0 +1,40 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: FortifyDemo
+  name: Default
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+  
+  
+- task: FortifyDynamicAssessment@7
+  inputs:
+    ScanSettings: 'c:\Apps\ZeroScanSettings.xml'
+    APIRoot: 'http://20.127.14.52:8083/webinspect/swagger/ui/index'
+    ScanResultsLocation: 'c:\Apps\Zeroscan.fpr'
+
+
+
+
+- task: CmdLine@2
+
+  inputs:
+
+    script: '"C:\Program Files\Fortify\Fortify WebInspect\wi.exe" -u "https://zero.webappsecurity.com" -n "AzureScan" -ps 1 -ep "C:\apps\scanwi.fpr"'
+   
+- task: CmdLine@2
+  inputs:
+       script: 'fortifyclient.bat -url http://fortifydemo:8380/ssc -authtoken 97f0c743-2b6a-4843-adc3-4121c90a8a18 uploadFPR -file C:\apps\scanwi.fpr -application "Zero" -applicationVersion "v221"'
