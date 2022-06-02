@@ -20,13 +20,6 @@ steps:
   displayName: 'Run a multi-line script'
   
   
-- task: FortifyDynamicAssessment@7
-  inputs:
-    ScanSettings: 'c:\Apps\ZeroScanSettings.xml'
-    APIRoot: 'http://20.127.14.52:8083/webinspect/swagger/ui/index'
-    ScanResultsLocation: 'c:\Apps\Zeroscan.fpr'
-
-
 
 
 - task: CmdLine@2
@@ -38,3 +31,9 @@ steps:
 - task: CmdLine@2
   inputs:
        script: 'fortifyclient.bat -url http://fortifydemo:8380/ssc -authtoken 97f0c743-2b6a-4843-adc3-4121c90a8a18 uploadFPR -file C:\apps\scanwi.fpr -application "Zero" -applicationVersion "v221"'
+
+- task: FortifyDynamicAssessment@7
+  inputs:
+    ScanSettings: 'c:\Apps\ZeroScanSettings.xml'
+    APIRoot: 'http://20.127.14.52:8083/webinspect/swagger/ui/index'
+    ScanResultsLocation: 'c:\Apps\Zeroscan.fpr'
